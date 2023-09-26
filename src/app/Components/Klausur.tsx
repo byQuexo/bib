@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import "../globals.css";
 import { TextInput, Button, Modal, Label } from 'flowbite-react';
 import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -152,15 +152,13 @@ export default function Klausur() {
                     </Modal.Body>
                     <Modal.Footer>
                     <Button color="success" onClick={() => {
-                        if (checkValid(newKlausur)) {
-                            Klausuren.push(newKlausur);
+                        if (checkValid(newKlausur)) { 
                             setKlausuren([...klausuren, newKlausur]);
                             console.table(klausuren);
                             props.setOpenModal(undefined);
                         } else {
                             alert("Ungültige Eingabe");
                         }
-                        props.setOpenModal(undefined);
                         }}>
                         Bestätigen
                     </Button>
