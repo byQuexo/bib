@@ -36,10 +36,10 @@ export default function Klausur() {
         if (klausur.von != undefined && klausur.bis != undefined) {
             if (klausur.von >= klausur.bis) {
                 return false;
-            } else if (klausur.von >= "17:00") {
+            } else if (klausur.von >= "17:00" && klausur.bis < "08:00") {
                 return false;
             } 
-        }else if (klausur.datum.getDay() !== 6 || klausur.datum.getDay() !== 0){
+        }else if (klausur.datum.getDay() !== 6 || klausur.datum.getDay() !== 0 || klausur.datum < new Date(Date.now())){
             return false;
         }else {
             return true;
@@ -98,6 +98,7 @@ export default function Klausur() {
                                         placeholder="Raum"
                                         onChange={(e) => {
                                             newKlausur.raum = e.target.value;
+                                            
                                         }}
                                         style={{marginBottom: "10pt"}}
                                         name='raum'
@@ -124,7 +125,14 @@ export default function Klausur() {
                                         placeholder='Von'
                                         onChange={(e) => {
                                             newKlausur.von = e.target.value;
-                                            console.log(newKlausur.von);
+                                            const bis = document.getElementsByName('bis')[0] as HTMLInputElement;
+                                            //setzte bis auf von + 1:30h mit format hh:mm;
+                                            const von = newKlausur.von.split(':');
+                                            const bisH = parseInt(von[0]) + 1;
+                                            const bisM = parseInt(von[1]) + 30;
+                                            const str = `${bisH.toString().padStart(2, '0')}:${bisM.toString().padStart(2, '0')}`;
+                                            bis.value = str;
+                                            newKlausur.bis = str;
                                         }}
                                         name='von'
                                     />
