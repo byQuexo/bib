@@ -17,11 +17,81 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  /* color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+}
+
+td {
+  width: auto; /* Die Breite automatisch anpassen */
+  white-space: nowrap; /* Verhindert den Zeilenumbruch im Zellinhalt */
+}
+
+h2 {
+  font-size: 1.5rem; /* Adjust the font size for smaller screens */
+}
+
+@media (max-width: 768px) {
+  td {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap; /* Verhindert den Zeilenumbruch im Zellinhalt */
+  }
+
+  h2 {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 1.5rem;/* Adjust the font size for smaller screens */
+  }
+  span {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 0.8rem; /* Adjust the font size for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  td {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap; /* Verhindert den Zeilenumbruch im Zellinhalt */
+  }
+
+  h2 {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 1.5rem; /* Adjust the font size for smaller screens */
+  }
+  span {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 0.8rem; /* Adjust the font size for smaller screens */
+  }
+}
+
+
+@media (max-width: 896px) {
+  td {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap; /* Verhindert den Zeilenumbruch im Zellinhalt */
+  }
+
+  h2 {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 1.5rem; /* Adjust the font size for smaller screens */
+  }
+  span {
+    width: auto; /* Die Breite automatisch anpassen */
+    white-space: nowrap;
+    font-size: 0.8rem; /* Adjust the font size for smaller screens */
+  }
+}
+#planer {
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
 }
