@@ -126,7 +126,6 @@ export default function Klausur() {
                                         onChange={(e) => {
                                             newKlausur.von = e.target.value;
                                             const bis = document.getElementsByName('bis')[0] as HTMLInputElement;
-                                            //setzte bis auf von + 1:30h mit format hh:mm;
                                             const von = newKlausur.von.split(':');
                                             const bisH = parseInt(von[0]) + 1;
                                             const bisM = parseInt(von[1]) + 30;
