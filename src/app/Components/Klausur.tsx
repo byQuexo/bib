@@ -4,8 +4,7 @@ import "../globals.css";
 import { TextInput, Button, Modal, Label } from 'flowbite-react';
 import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
+import { ScrollArea } from "../../../@/components/ui/scroll-area";
 
 interface KalasurProps {
     von?: string;
@@ -26,13 +25,17 @@ export default function Klausur() {
     const newKlausur: KalasurProps = {
         von: '' || undefined,
         bis: '' || undefined,
-        datum: new Date(),
+        datum: new Date(Date.now()),
         fach: '',
         raum: '' || undefined,
         thema: '' || undefined,
     }
 
     const checkValid = (klausur: KalasurProps) => {
+        if(klausur.von !== '' && klausur.bis !== '') {
+            klausur.von = "08:00";
+            klausur.bis = "09:30";
+        }
         if (klausur.von != undefined && klausur.bis != undefined) {
             if (klausur.von >= klausur.bis) {
                 return false;
@@ -56,27 +59,15 @@ export default function Klausur() {
                         <Button color="primary noborder" onClick={() => props.setOpenModal('addKlausur')} style={{marginLeft: 'auto'}} ><FontAwesomeIcon icon={faPlus} size="lg"/></Button>
                     </div> 
                     <div className="flex flex-col gap-2" style={{height: '100%', overflowY: 'auto'}}>
-                        {klausuren.map((klausur, index) => {
-                            return (
-                                <div key={index}>
-                                    <div className="flex flex-row gap-2">
-                                        <div className="flex flex-col gap-2" style={{width: '100%'}}>
-                                            <div className="flex flex-row gap-2">
-                                                <h2 style={{ fontSize: '1.5rem' }}>{klausur.fach}</h2>
-                                                <h2 style={{ fontSize: '1.5rem' }}>{klausur.raum}</h2>
-                                            </div>
-                                            <div className="flex flex-row gap-2">
-                                                <h2 style={{ fontSize: '1.5rem' }}>{klausur.datum.toLocaleDateString()}</h2>
-                                                <h2 style={{ fontSize: '1.5rem' }}>{klausur.von} - {klausur.bis}</h2>
-                                            </div>
-                                            <div className="flex flex-row gap-2">
-                                                <h2 style={{ fontSize: '1.5rem' }}>{klausur.thema}</h2>
-                                            </div>
-                                        </div>
+                        <ScrollArea className="rounded-md border h-72">
+                            {klausuren.map((klausur, index) => {
+                                return (
+                                    <div key={index}>
+                                        
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </ScrollArea>
                     </div>
                 </div>
             </div>
@@ -110,7 +101,6 @@ export default function Klausur() {
                                         onChange={(e) => {
                                             if (e.target.valueAsDate) {
                                                 newKlausur.datum = e.target.valueAsDate;
-                                                console.log(newKlausur.datum);
                                             }
                                         }}
                                         style={{marginBottom: "10pt"}}
@@ -123,6 +113,7 @@ export default function Klausur() {
                                     <TextInput
                                         type='time'
                                         placeholder='Von'
+                                        value="08:00"
                                         onChange={(e) => {
                                             newKlausur.von = e.target.value;
                                             const bis = document.getElementsByName('bis')[0] as HTMLInputElement;
@@ -140,6 +131,7 @@ export default function Klausur() {
                                     <TextInput
                                         type='time'
                                         placeholder='Bis'
+                                        value="09:30"
                                         name='bis'
                                         onChange={(e) => {
                                             newKlausur.bis = e.target.value;
@@ -159,7 +151,7 @@ export default function Klausur() {
                     </Modal.Body>
                     <Modal.Footer>
                     <Button color="success" onClick={() => {
-                        if (checkValid(newKlausur)) { 
+                        if (checkValid(newKlausur)) {
                             setKlausuren([...klausuren, newKlausur]);
                             console.table(klausuren);
                             props.setOpenModal(undefined);
