@@ -107,7 +107,6 @@ export default function Klausur() {
                                     <TextInput
                                         placeholder="Datum"
                                         type='date'
-                                        value={new Date(Date.now().getHour()}
                                         onChange={(e) => {
                                             if (e.target.valueAsDate) {
                                                 newKlausur.datum = e.target.valueAsDate;
