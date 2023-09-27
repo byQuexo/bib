@@ -1,13 +1,15 @@
 "use client";
-import React, {useState} from 'react';
+import React, {useState, useEffect, use} from 'react';
 import "../globals.css";
 import { TextInput, Button, Modal, Label } from 'flowbite-react';
 import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
 import Kelement from './notiz-element';
+import { get } from 'http';
 
 interface KalasurProps {
+    id: number;
     von?: string;
     bis?: string;
     datum: Date;
@@ -16,20 +18,42 @@ interface KalasurProps {
     thema?: string;
 }
 
+export function getKlausuren(): KalasurProps[] {
+    let klausur: string | null = null;
+    if (typeof window !== 'undefined') {
+        klausur = localStorage.getItem('klausuren');
+    }
+    if (klausur) {
+        return JSON.parse(klausur) as KalasurProps[];
+    }
+    return [];
+}
+
+export function delKlausur(id: number) {
+    const klausuren = getKlausuren();
+    const newKlausuren = klausuren.filter((klausur: KalasurProps) => klausur.id !== id);
+    storeKlausuren(newKlausuren);
+}
+
+export function storeKlausuren(klausuren: KalasurProps[]){
+    localStorage.setItem('klausuren', JSON.stringify(klausuren));
+}
+
 export const Klausuren: KalasurProps[] = [];
 
 export default function Klausur() {
-    const [klausuren, setKlausuren] = useState(Klausuren);
+    const [klausuren, setKlausuren] = useState(getKlausuren());
     const [openModal, setOpenModal] = useState<string | undefined>();
     const props = { openModal, setOpenModal };
 
     const newKlausur: KalasurProps = {
+        id: klausuren.length + 1,
         von: '' || undefined,
         bis: '' || undefined,
-        datum: new Date(Date.now()),
+        datum: new Date(),
         fach: '',
-        raum: '' || undefined,
-        thema: '' || undefined,
+        raum: '',
+        thema: '',
     }
 
     const checkValid = (klausur: KalasurProps) => {
@@ -51,6 +75,12 @@ export default function Klausur() {
         return true;
     }
 
+
+    useEffect(() => {
+        setKlausuren(getKlausuren());
+    }
+    , [getKlausuren()]);
+
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', minWidth: 300}}>
@@ -61,14 +91,21 @@ export default function Klausur() {
                     </div> 
                     <div className="flex flex-col gap-2" style={{height: '100%', overflowY: 'auto'}}>
                         <ScrollArea className="rounded-md border h-72 w-65">
+                            {klausuren.length === 0 ? 
+                                <div className="flex flex-col justify-center items-center h-full">
+                                    <Label className="text-lg text-muted-foreground">Keine Klausuren</Label>
+                                </div>
+                                :
+                                <>
                             {klausuren.map((klausur, index) => {
                                 return (
                                     <div key={index}>
                                         <Kelement {...klausur} />
-                                    </div>
-                                    
+                                    </div>        
                                 );
                             })}
+                            </>
+                            }
                         </ScrollArea>
                     </div>
                 </div>
@@ -79,9 +116,10 @@ export default function Klausur() {
                         <div className="mb-2 block">
                                 <TextInput
                                     placeholder="Fach"
-                                    onChange={(e) => {
-                                        newKlausur.fach = e.target.value;
-                                    }}
+                                    // onChange={(e) => {
+                                    //     console.log(e.target.value);
+                                    //     newKlausur.fach = e.target.value;
+                                    // }}
                                     style={{marginBottom: "10pt"}}
                                     name='fach'
                                     required
@@ -89,10 +127,11 @@ export default function Klausur() {
                             <div className="flex flex-row gap-4">
                                     <TextInput
                                         placeholder="Raum"
-                                        onChange={(e) => {
-                                            newKlausur.raum = e.target.value;
+                                        // onChange={(e) => {
+                                        //     console.log(e.target.value);
+                                        //     newKlausur.raum = e.target.value;
                                             
-                                        }}
+                                        // }}
                                         style={{marginBottom: "10pt"}}
                                         name='raum'
                                         maxLength={10}
@@ -100,11 +139,11 @@ export default function Klausur() {
                                     <TextInput
                                         placeholder="Datum"
                                         type='date'
-                                        onChange={(e) => {
-                                            if (e.target.valueAsDate) {
-                                                newKlausur.datum = e.target.valueAsDate;
-                                            }
-                                        }}
+                                        // onChange={(e) => {
+                                        //     if (e.target.valueAsDate) {
+                                        //         newKlausur.datum = e.target.valueAsDate;
+                                        //     }
+                                        // }}
                                         style={{marginBottom: "10pt"}}
                                         name='datum'
                                         required
@@ -135,17 +174,18 @@ export default function Klausur() {
                                         placeholder='Bis'
                                         value="09:30"
                                         name='bis'
-                                        onChange={(e) => {
-                                            newKlausur.bis = e.target.value;
-                                        }}
+                                        // onChange={(e) => {
+                                        //     newKlausur.bis = e.target.value;
+                                        //}}
                                         />
                                 </div>
                             </div>
                             <TextInput
                                 placeholder="Thema"
-                                onChange={(e) => {
-                                    newKlausur.thema = e.target.value;
-                                }}
+                                // onChange={(e) => {
+                                //     console.log(e.target.value);
+                                //     newKlausur.thema = e.target.value;
+                                // }}
                                 maxLength={50}
                                 style={{marginBottom: "10pt"}}
                                 name='thema'
@@ -154,9 +194,23 @@ export default function Klausur() {
                     </Modal.Body>
                     <Modal.Footer>
                     <Button color="success" onClick={() => {
+                        const fach = document.getElementsByName('fach')[0] as HTMLInputElement;
+                        const datum = document.getElementsByName('datum')[0] as HTMLInputElement;
+                        const von = document.getElementsByName('von')[0] as HTMLInputElement;
+                        const bis = document.getElementsByName('bis')[0] as HTMLInputElement;
+                        const raum = document.getElementsByName('raum')[0] as HTMLInputElement;
+                        const thema = document.getElementsByName('thema')[0] as HTMLInputElement;
+
+                        newKlausur.fach = fach.value;
+                        newKlausur.datum = new Date(datum.value);
+                        newKlausur.von = von.value;
+                        newKlausur.bis = bis.value;
+                        newKlausur.raum = raum.value;
+                        newKlausur.thema = thema.value;
+                        
                         if (checkValid(newKlausur)) {
-                            setKlausuren([...klausuren, newKlausur]);
-                            console.table(klausuren);
+                            console.table(newKlausur);
+                            storeKlausuren([...klausuren, newKlausur]);
                             props.setOpenModal(undefined);
                         } else {
                             alert("Ungültige Eingabe");
