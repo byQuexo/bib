@@ -5,6 +5,7 @@ import { TextInput, Button, Modal, Label } from 'flowbite-react';
 import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
+import Kelement from './notiz-element';
 
 interface KalasurProps {
     von?: string;
@@ -59,12 +60,13 @@ export default function Klausur() {
                         <Button color="primary noborder" onClick={() => props.setOpenModal('addKlausur')} style={{marginLeft: 'auto'}} ><FontAwesomeIcon icon={faPlus} size="lg"/></Button>
                     </div> 
                     <div className="flex flex-col gap-2" style={{height: '100%', overflowY: 'auto'}}>
-                        <ScrollArea className="rounded-md border h-72">
+                        <ScrollArea className="rounded-md border h-72 w-65">
                             {klausuren.map((klausur, index) => {
                                 return (
                                     <div key={index}>
-                                        
+                                        <Kelement {...klausur} />
                                     </div>
+                                    
                                 );
                             })}
                         </ScrollArea>
@@ -144,6 +146,7 @@ export default function Klausur() {
                                 onChange={(e) => {
                                     newKlausur.thema = e.target.value;
                                 }}
+                                maxLength={50}
                                 style={{marginBottom: "10pt"}}
                                 name='thema'
                                 />
