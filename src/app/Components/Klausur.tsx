@@ -17,6 +17,16 @@ interface KalasurProps {
     thema?: string;
 }
 
+export function getKlausurbyId(id: number): KalasurProps | undefined {
+    const klausuren = getKlausuren();
+    return klausuren.find((k: KalasurProps) => k.id === id);
+} 
+
+export function editKlausur(id: number): KalasurProps | undefined {
+    const klausuren = getKlausuren();
+    return klausuren.find((k: KalasurProps) => k.id === id);
+}
+
 export function getKlausuren(): KalasurProps[] {
     let klausur: string | null = null;
     if (typeof window !== 'undefined') {
@@ -36,6 +46,25 @@ export function delKlausur(id: number) {
 
 export function storeKlausuren(klausuren: KalasurProps[]){
     localStorage.setItem('klausuren', JSON.stringify(klausuren));
+}
+
+export const checkValid = (klausur: KalasurProps) => {
+    if(klausur.von !== '' && klausur.bis !== '') {
+        klausur.von = "08:00";
+        klausur.bis = "09:30";
+    }
+    if (klausur.von != undefined && klausur.bis != undefined) {
+        if (klausur.von >= klausur.bis) {
+            return false;
+        } else if (klausur.von >= "17:00" && klausur.bis < "08:00") {
+            return false;
+        } 
+    }else if (klausur.datum.getDay() !== 6 || klausur.datum.getDay() !== 0 || klausur.datum < new Date(Date.now())){
+        return false;
+    }else {
+        return true;
+    }
+    return true;
 }
 
 export const Klausuren: KalasurProps[] = [];
@@ -58,24 +87,7 @@ export default function Klausur() {
         thema: '',
     }
 
-    const checkValid = (klausur: KalasurProps) => {
-        if(klausur.von !== '' && klausur.bis !== '') {
-            klausur.von = "08:00";
-            klausur.bis = "09:30";
-        }
-        if (klausur.von != undefined && klausur.bis != undefined) {
-            if (klausur.von >= klausur.bis) {
-                return false;
-            } else if (klausur.von >= "17:00" && klausur.bis < "08:00") {
-                return false;
-            } 
-        }else if (klausur.datum.getDay() !== 6 || klausur.datum.getDay() !== 0 || klausur.datum < new Date(Date.now())){
-            return false;
-        }else {
-            return true;
-        }
-        return true;
-    }
+    
 
 
     useEffect(() => {
