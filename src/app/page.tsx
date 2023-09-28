@@ -74,7 +74,7 @@ export default function Home() {
           </p>
             <div className="flex items-center justify-between gap-4">
               <a href="/profile" style={{textAlign: 'left'}}><FontAwesomeIcon icon={faGear} size="lg" height={20}/></a>
-              <a href="/profile" style={{textAlign: 'left'}}><FontAwesomeIcon icon={faPlus} size="lg" height={20}/></a>
+              <a href="/notizen" style={{textAlign: 'left'}}><FontAwesomeIcon icon={faPlus} size="lg" height={20}/></a>
               <Datepicker
                 language="de-DE"
                 datatype='Date'

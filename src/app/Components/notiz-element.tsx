@@ -1,9 +1,17 @@
 "use client";
 import React from 'react';
-import { Button, Label } from 'flowbite-react';
-import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { Button, Label, Textarea } from 'flowbite-react';
+import { faMinus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { delKlausur } from './Klausur';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "../../../@/components/ui/card"
 
 interface KalasurProps {
      id: number;
@@ -16,20 +24,32 @@ interface KalasurProps {
 }
 
 export default function Kelement(klausur: KalasurProps) {
+    const date = new Date(klausur.datum);
     return (
-        <>
-            <div className="flex flex-row gap-2 border" style={{borderRadius: '10px', boxShadow: '0px 0px 5px rgba(0,0,0,0.2)', padding: '20px', maxWidth: '94%', marginLeft: '1pt', marginRight: '2pt', marginTop: '5pt', maxHeight: "50pt"}}>
-                <div className="flex flex-col" style={{maxWidth: '70%'}}>
-                    <Label className='text-lg' style={{maxWidth: "25ch"}}>{klausur.fach}</Label>
+          <>
+            <Card className="w-full max-w-sm">
+                <CardHeader>
+                    <CardTitle style={{maxWidth: "200pt", overflow: "hidden"}}>{klausur.fach}</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground gap-3">
+                        <div className="flex flex-row gap-3 text-xs">
+                            <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{date.toLocaleDateString()}</Label>
+                            <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{klausur.von} - {klausur.bis}</Label>
+                            <Button color="black" key={klausur.id} style={{marginLeft: 'auto', width: '25pt', height: '15pt', border: 'none'}} id="trash" onClick={() => {
+                                //console.table(klausur);
+                        }}><FontAwesomeIcon icon={faTrash} size="sm" color='red' id='trash'/></Button>
+                        </div>
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <span className="text-sm text-muted-foreground">Thema:</span>
                     <div className="flex flex-row gap-3 text-xs">
-                        <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{}</Label>
-                        <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{klausur.von} - {klausur.bis}</Label>
+                        <Textarea className='text-sm text-muted-foreground' style={{ fontSize: 10}} disabled>{klausur.thema}</Textarea>
+                        <Button color="black" key={klausur.id} style={{marginLeft: 'auto', width: '25pt', height: '15pt', border: 'none'}} onClick={() => {
+                            //delKlausur(klausur.id);
+                        }}><FontAwesomeIcon icon={faPen} size="sm"/></Button>
                     </div>
-                </div>
-                <Button color="failure" key={klausur.id} style={{marginLeft: 'auto', width: '25pt', height: '15pt'}} onClick={() => {
-                    delKlausur(klausur.id);
-                }}><FontAwesomeIcon icon={faMinus} size="sm"/></Button>
-            </div>
+                </CardContent>
+            </Card>
         </>
     );
 }

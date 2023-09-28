@@ -24,6 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
+    overscroll-behavior: none;
 }
 
 td {
@@ -94,6 +95,12 @@ h2 {
   width: 100%;
   text-align: center;
   justify-content: center;
+}
+
+#trash {
+*:hover {
+  size: lg;
+}
 }
  
 @layer base {
