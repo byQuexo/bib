@@ -3,8 +3,7 @@ import React, {useState} from 'react';
 import { Button, Label, Textarea, Modal, TextInput } from 'flowbite-react';
 import { faMinus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Klausur, { editKlausur, checkValid, storeKlausuren, getKlausuren} from './Klausur';
-import { delKlausur } from './Klausur';
+import Klausur, { editKlausur, checkValid, storeKlausuren, getKlausuren, delKlausur, replaceKlausur} from './Klausur';
 import {
     Card,
     CardContent,
@@ -29,6 +28,7 @@ export default function Kelement(klausur: KalasurProps) {
     const [klausurEdit, setKlausurEdit] = useState<KalasurProps | undefined>();
     const props = { openModal, setOpenModal };
     const date = new Date(klausur.datum);
+    const Editdate = klausurEdit?.datum;
  
     return (
           <>
@@ -40,18 +40,21 @@ export default function Kelement(klausur: KalasurProps) {
                             <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{date.toLocaleDateString()}</Label>
                             <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{klausur.von} - {klausur.bis}</Label>
                             <Button color="black" key={klausur.id} style={{marginLeft: 'auto', width: '25pt', height: '15pt', border: 'none'}} id="trash" onClick={() => {
-                                //console.table(klausur);
+                                delKlausur(klausur.id);
                         }}><FontAwesomeIcon icon={faTrash} size="sm" color='red' id='trash'/></Button>
                         </div>
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
+                    <span className="text-sm text-muted-foreground">Raum:</span>
+                    <div className="flex flex-row gap-3 text-xs">
+                        <Label className='text-sm text-muted-foreground' style={{ fontSize: 10}}>{klausur.raum}</Label>
+                    </div>
                     <span className="text-sm text-muted-foreground">Thema:</span>
                     <div className="flex flex-row gap-3 text-xs">
                         <Textarea className='text-sm text-muted-foreground' style={{ fontSize: 10}} disabled>{klausur.thema}</Textarea>
                         <Button color="black" key={klausur.id} style={{marginLeft: 'auto', width: '25pt', height: '15pt', border: 'none'}} onClick={() => {
                             setKlausurEdit(editKlausur(klausur.id));
-                            
                             setOpenModal('editKlausur');
                         }}><FontAwesomeIcon icon={faPen} size="sm"/></Button>
                     </div>
@@ -68,6 +71,7 @@ export default function Kelement(klausur: KalasurProps) {
                                     //     console.log(e.target.value);
                                     //     newKlausur.fach = e.target.value;
                                     // }}
+                                    defaultValue={klausurEdit?.fach}
                                     style={{marginBottom: "10pt"}}
                                     name='fach'
                                     maxLength={20}
@@ -76,7 +80,7 @@ export default function Kelement(klausur: KalasurProps) {
                             <div className="flex flex-row gap-4">
                                     <TextInput
                                         placeholder="Raum"
-                                        value={klausurEdit?.raum}
+                                        defaultValue={klausurEdit?.raum}
                                         style={{marginBottom: "10pt"}}
                                         name='raum'
                                         maxLength={5}
@@ -89,7 +93,7 @@ export default function Kelement(klausur: KalasurProps) {
                                         //         newKlausur.datum = e.target.valueAsDate;
                                         //     }
                                         // }}
-                                        defaultValue={klausurEdit?.datum.toLocaleDateString()}
+                                        defaultValue=''
                                         style={{marginBottom: "10pt"}}
                                         name='datum'
                                         required
@@ -148,8 +152,7 @@ export default function Kelement(klausur: KalasurProps) {
                         klausurEdit!.thema = thema.value;
                         
                         if (checkValid(klausurEdit!)) {
-                            console.table(klausurEdit);
-                            storeKlausuren([...getKlausuren(), klausurEdit!]);
+                            replaceKlausur(klausurEdit!.id, klausurEdit!);
                             props.setOpenModal(undefined);
                         } else {
                             alert("Ungültige Eingabe");

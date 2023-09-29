@@ -1,7 +1,7 @@
 "use client";
 import React, {useState, useEffect, use} from 'react';
 import "../globals.css";
-import { TextInput, Button, Modal, Label, Textarea} from 'flowbite-react';
+import { TextInput, Button, Modal, Label, Textarea, Breadcrumb} from 'flowbite-react';
 import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
@@ -42,6 +42,13 @@ export function delKlausur(id: number) {
     const klausuren = getKlausuren();
     const newKlausuren = klausuren.filter((klausur: KalasurProps) => klausur.id !== id);
     storeKlausuren(newKlausuren);
+}
+
+export function replaceKlausur(id: number, klausur: KalasurProps) {
+    //ersetzte die alte klausur mit der neuen klausur mit der id
+    const klausuren = getKlausuren();
+    const newKlausuren = klausuren.filter((klausur: KalasurProps) => klausur.id !== id);
+    storeKlausuren([...newKlausuren, klausur]);
 }
 
 export function storeKlausuren(klausuren: KalasurProps[]){
@@ -107,14 +114,24 @@ export default function Klausur() {
 
     return (
         <>
+        <Breadcrumb aria-label="Solid background breadcrumb example" className='fixed bg-gray-50 px-5 py-3 dark:bg-gray-900'>
+            <Breadcrumb.Item href="/">
+                <p>
+                Home
+                </p>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+                Klausuren 
+            </Breadcrumb.Item>
+        </Breadcrumb>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', minWidth: 300}}>
-                <div style={{ width: '80%', maxWidth: '400px', height: '400px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0,0,0,0.2)', padding: '20px', fontSize: '1rem' }}>
+                <div style={{ width: '80%', maxWidth: '400px', height: '600px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0,0,0,0.2)', padding: '20px', fontSize: '1rem' }}>
                     <div className="mb-2 block flex flex-row" style={{marginBottom: "15pt"}}>
                         <h2 style={{ fontSize: '1.5rem' }}>Klausur</h2>
                         <Button color="primary noborder" onClick={() => props.setOpenModal('addKlausur')} style={{marginLeft: 'auto'}} ><FontAwesomeIcon icon={faPlus} size="lg"/></Button>
                     </div> 
-                    <div className="flex flex-col gap-2" style={{height: '100%', overflowY: 'auto'}}>
-                        <ScrollArea className="rounded-md border h-72 w-65">
+                    <div className="flex flex-col gap-2" style={{height: '90%', overflowY: 'auto'}}>
+                        <ScrollArea className="rounded-md border h-75 w-65">
                             {klausuren.length === 0 ? 
                                 <div className="flex flex-col justify-center items-center h-full">
                                     <Label className="text-lg text-muted-foreground">Keine Klausuren</Label>
@@ -140,10 +157,6 @@ export default function Klausur() {
                         <div className="mb-2 block">
                                 <TextInput
                                     placeholder="Fach"
-                                    // onChange={(e) => {
-                                    //     console.log(e.target.value);
-                                    //     newKlausur.fach = e.target.value;
-                                    // }}
                                     style={{marginBottom: "10pt"}}
                                     name='fach'
                                     maxLength={20}
@@ -152,11 +165,6 @@ export default function Klausur() {
                             <div className="flex flex-row gap-4">
                                     <TextInput
                                         placeholder="Raum"
-                                        // onChange={(e) => {
-                                        //     console.log(e.target.value);
-                                        //     newKlausur.raum = e.target.value;
-                                            
-                                        // }}
                                         style={{marginBottom: "10pt"}}
                                         name='raum'
                                         maxLength={5}
@@ -164,11 +172,6 @@ export default function Klausur() {
                                     <TextInput
                                         placeholder="Datum"
                                         type='date'
-                                        // onChange={(e) => {
-                                        //     if (e.target.valueAsDate) {
-                                        //         newKlausur.datum = e.target.valueAsDate;
-                                        //     }
-                                        // }}
                                         style={{marginBottom: "10pt"}}
                                         name='datum'
                                         required
@@ -202,10 +205,6 @@ export default function Klausur() {
                             </div>
                             <Textarea
                                 placeholder="Thema"
-                                // onChange={(e) => {
-                                //     console.log(e.target.value);
-                                //     newKlausur.thema = e.target.value;
-                                // }}
                                 style={{marginBottom: "10pt"}}
                                 name='thema'
                                 />
