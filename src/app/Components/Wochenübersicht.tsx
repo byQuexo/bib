@@ -22,6 +22,18 @@ event: string;
 ort?: string;
 }
 
+const getWeekStart = (date: Date) => {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(date.setDate(diff));
+}
+
+const getWeekEnd = (date: Date) => {  
+  const day = date.getDay();
+  const diff = date.getDate() + (6 - day);
+  return new Date(date.setDate(diff));
+}
+
 function makeElementForEvent(events: Event[], currentDate: Date, Klasse: string): JSX.Element {
 
   const filteredEvents = events.filter((event) => {
