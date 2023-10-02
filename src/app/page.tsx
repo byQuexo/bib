@@ -6,6 +6,7 @@ import Stundenplan from './Components/Stundenplan';
 import { faGear, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Datepicker, DatepickerProps} from 'flowbite-react';
+import Particle from './Components/Particles';
 import {
   Tabs,
   TabsContent,
@@ -70,9 +71,10 @@ export default function Home() {
   };
   return (
     <>
-    <div className=" fixed flex flex-col items-center justify-center min-h-screen py-2">
-      <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
-        <div className="p-6 mt-6 text-left border w-500 rounded-xl shadow-xl dark:bg-gray-900">
+    <Particle />
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <main className="fixed flex flex-col items-center justify-center flex-1 px-20 text-center"> 
+        <div className="p-6 mt-6 text-left border w-500 rounded-xl shadow-xl dark:bg-gray-900" style={{ backgroundColor: 'white'}}>
         <Tabs defaultValue='Stundenplan'>
           <TabsList className="flex justify-center w-full">
             <TabsTrigger value="Stundenplan" className="w-1/2 font-bold bg-gray-50 px-5 py-3 dark:bg-gray-900 rounded" > 
