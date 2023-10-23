@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import "../globals.css";
 import { HiX } from 'react-icons/hi';
 import { MdAnnouncement } from 'react-icons/md';
+import { loadUserData, saveUserData } from '../Functions/Functions';
 import { Button, Modal, Banner, ToggleSwitch, Label, TextInput, Checkbox } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { faCircleInfo, faKey, faCheck, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -16,11 +17,12 @@ export const userdata = {
 }
 
 export default function Profile() {
+    const user: typeof userdata = loadUserData() ?? userdata;
     const [openModal, setOpenModal] = useState<string | undefined>();
     const props = { openModal, setOpenModal };
     const [token, setToken] = useState('');
-    const [refreshrate, setRefreshrate] = useState(userdata.refreshrate);
-    const [auto_refresh, setAuto_refresh] = useState(userdata.auto_refresh);
+    const [refreshrate, setRefreshrate] = useState(user.refreshrate);
+    const [auto_refresh, setAuto_refresh] = useState(user.auto_refresh);
     const [showToken, setShowToken] = useState(false);
     return (
         <>
@@ -38,6 +40,7 @@ export default function Profile() {
                             <TextInput
                                 icon={() => <FontAwesomeIcon icon={faKey} size="lg"/>}
                                 id="token"
+                                defaultValue={user.token}
                                 placeholder="YOUR TOKEN"
                                 onChange={(e) => {
                                     setToken(e.target.value);
@@ -47,7 +50,7 @@ export default function Profile() {
                             />
                             <br />
                             <div className="flex items-center gap-2">
-                                <Checkbox id='show' onChange={() => {
+                                <Checkbox id='show' defaultChecked={user.auto_refresh} onChange={() => {
                                     setShowToken(!showToken);
                                 }} style={{fontSize: '0.8rem', alignItems: 'center'}} placeholder='Show Token'/>
                                 <Label 
@@ -84,12 +87,12 @@ export default function Profile() {
                             <Button color="success" onClick={() => {
                                 const checkToken = async () => {
                                     try {
-                                        const response = await fetch('https://intranet.bib.de/ical/' + token + "/-");
+                                        user.token = token;
+                                        const response = await fetch('https://intranet.bib.de/ical/' + user.token + "/-");
                                         if (response.status === 200) {
-                                            userdata.token = token;
-                                            userdata.refreshrate = refreshrate;
-                                            userdata.auto_refresh = auto_refresh;
-                                            localStorage.setItem('userdata', JSON.stringify(userdata));
+                                            user.refreshrate = refreshrate;
+                                            user.auto_refresh = auto_refresh;
+                                            saveUserData(user);
                                             props.setOpenModal('check');
                                         }   
                                     } catch (error) {

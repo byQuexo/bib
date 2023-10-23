@@ -1,9 +1,14 @@
 import ical from 'next-ical';
+import { userdata } from '../Components/Profile';
 
-export function getICalFile(username: string): Promise<Blob> {
+
+
+
+export function getICalFile(username?: string): Promise<Blob> {
+    const user = loadUserData() ?? userdata;
     return new Promise((resolve, reject) => {
         const fetchAndStoreICalFile = async () => {
-            const response = await fetch('http://localhost:5000/calendar/' + username);
+            const response = await fetch('https://intranet.bib.de/ical/' + user.token + '/' + username ?? '');
             if (!response.ok) {
                 return Promise.reject();
             }
@@ -110,4 +115,20 @@ export function getEventsSummary(events: any): Event[] {
         }
     }
     return eventObj;
+}
+
+
+export function saveUserData(data: typeof userdata) {
+    if(typeof window === 'undefined') return;
+    localStorage.setItem('userdata', JSON.stringify(data));
+}
+
+
+export function loadUserData() {
+    if(typeof window === 'undefined') return null;
+    const userdata = localStorage.getItem('userdata');
+    if (userdata) {
+        return JSON.parse(userdata);
+    }
+    return null;
 }
