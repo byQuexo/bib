@@ -2,6 +2,7 @@
 
 ## Features
 - Stundenplan
+  - PWA Features
   - Wochenansicht (TODO)
      - Kalendereinträge
   - Tagesansicht
@@ -9,4 +10,6 @@
 - User Settings
   - Token eingabe
   - Refresh Rate Settings
-- Responsive Design 
+- Responsive Design
+- Klausur Einträge
+  - Local Storage Einträge 
