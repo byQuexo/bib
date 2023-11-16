@@ -17,4 +17,4 @@
 
 ## Vercel Live Preview
 
-LIVE DEMO[https://vercel.com/byquexo/bib/DQRfaQbMa26q3K3bMWMiqXhM3vXE]
+[LIVE DEMO](https://vercel.com/byquexo/bib/DQRfaQbMa26q3K3bMWMiqXhM3vXE)
