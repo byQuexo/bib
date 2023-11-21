@@ -6,6 +6,7 @@ import {Particles} from "react-tsparticles";
 export default function Home() {
     return (
         <>
+            <Particles />
             <Profile />
         </>
     );
