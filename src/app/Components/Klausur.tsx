@@ -6,6 +6,7 @@ import { faCalendarDays, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
 import Kelement from './notiz-element';
+import { Particles } from '.';
 
 interface KalasurProps {
     id: number;
@@ -114,6 +115,7 @@ export default function Klausur() {
 
     return (
         <>
+        <Particles />
         <Breadcrumb aria-label="Solid background breadcrumb example" className='fixed bg-gray-50 px-5 py-3 dark:bg-gray-900'>
             <Breadcrumb.Item href="/">
                 <p>

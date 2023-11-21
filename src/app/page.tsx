@@ -6,14 +6,13 @@ import Stundenplan from './Components/Stundenplan';
 import { faGear, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Datepicker, DatepickerProps} from 'flowbite-react';
-import Particle from './Components/Particles';
+import {Particles} from './Components';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../../@/components/ui/tabs"
-
 interface MyComboboxProps {
   people: { id: number; name: string }[];
 }
@@ -71,7 +70,7 @@ export default function Home() {
   };
   return (
     <>
-    <Particle />
+    <Particles />
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="fixed flex flex-col items-center justify-center flex-1 px-20 text-center">
         <div className="p-6 mt-6 text-left border w-500 rounded-xl shadow-xl dark:bg-gray-900" style={{ backgroundColor: "white"}}>

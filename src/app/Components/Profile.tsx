@@ -1,14 +1,12 @@
 "use client";
 import React, { useState, useCallback } from 'react';
 import "../globals.css";
-import { HiX } from 'react-icons/hi';
-import { MdAnnouncement } from 'react-icons/md';
 import { loadUserData, saveUserData } from '../Functions/Functions';
 import { Button, Modal, Banner, ToggleSwitch, Label, TextInput, Checkbox } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { faCircleInfo, faKey, faCheck, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { redirect } from 'next/dist/server/api-utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Particles } from '.';
 
 export const userdata = {
     token: '',
@@ -26,6 +24,7 @@ export default function Profile() {
     const [showToken, setShowToken] = useState(false);
     return (
         <>
+            <Particles />
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', minWidth: 300}}>
                 <div style={{ width: '80%', maxWidth: '400px', height: '400px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0,0,0,0.2)', padding: '20px', fontSize: '1rem' }}>
                     <h2 style={{ fontSize: '1.5rem' }}>Settings</h2>
